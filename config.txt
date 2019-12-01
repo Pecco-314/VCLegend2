@@ -1,0 +1,11 @@
+Group Myth
+    Goal 10000000
+    Song 
+End
+Group Legend
+    Goal 1000000
+    Song 
+End
+Group Others
+    Goal 1000000
+End
