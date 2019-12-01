@@ -1,11 +1,24 @@
 Group Myth
     Goal 10000000
-    Song 
-End
+    Song 普通 2129461
+    Song 权御 2075941
+    Song 九九 3905462
+    Song 达拉 9372087
+    Song 冠世 36570568
+    Song 勾指 43426592
 Group Legend
     Goal 1000000
-    Song 
-End
+    Song 不老不死 55888297
+    Song 警察蜀黍 1328642
+    Song 〇 28381447
+    Song 逃亡生涯 15735744
+    Song 复仇生涯 27174014
+    Song 非人哉 21221652
+    Song 钥匙 3676843
+    Song 铄金 5244057
+    Song 男孩 33640798
+    Song 罗德岛 55287468
+    Song 地势坤 69519887
 Group Others
     Goal 1000000
-End
+    Song 桂圆 2231425
