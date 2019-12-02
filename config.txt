@@ -1,24 +1,28 @@
 Group Myth
     Goal 10000000
-    Song 普通 2129461
-    Song 权御 2075941
-    Song 九九 3905462
-    Song 达拉 9372087
-    Song 冠世 36570568
-    Song 勾指 43426592
+    Congrats 恭喜神话！
+    Video 普通 2129461
+    Video 权御 2075941
+    Video 九九 3905462
+    Video 达拉 9372087
+    Video 冠世 36570568
+    Video 勾指 43426592
 Group Legend
     Goal 1000000
-    Song 不老不死 55888297
-    Song 警察蜀黍 1328642
-    Song 〇 28381447
-    Song 逃亡生涯 15735744
-    Song 复仇生涯 27174014
-    Song 非人哉 21221652
-    Song 钥匙 3676843
-    Song 铄金 5244057
-    Song 男孩 33640798
-    Song 罗德岛 55287468
-    Song 地势坤 69519887
+    Congrats 恭喜传说！
+    Video 不老不死 55888297
+    Video 警察蜀黍 1328642
+    Video 〇 28381447
+    Video 逃亡生涯 15735744
+    Video 复仇生涯 27174014
+    Video 非人哉 21221652
+    Video 钥匙 3676843
+    Video 铄金 5244057
+    Video 男孩 33640798
+    Video 罗德岛 55287468
+    Video 地势坤 69519887
+    Video 多情岸 25386207
 Group Others
     Goal 1000000
-    Song 桂圆 2231425
+    Congrats 恭喜传说！
+    Video 桂圆 2231425
