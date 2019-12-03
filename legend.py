@@ -2,6 +2,7 @@ import datetime
 import re
 import requests
 import pyperclip
+import os
 
 
 def get_formatted_date(delta: int = 0) -> str:
@@ -172,3 +173,4 @@ def get_brief(former: str = get_formatted_date(1), latter: str = "api", delta_da
 
 if __name__ == "__main__":
     print(get_brief())
+    os.system("pause")
