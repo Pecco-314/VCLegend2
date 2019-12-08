@@ -160,13 +160,30 @@ def get_brief(former: str = get_formatted_date(1), latter: str = "api", delta_da
         else:
             s = s + ("----\n")
         delta, predict = get_delta(former, latter, delta_days, g)
+        # 最大增量
+        m = max(delta.values())
+        # 7天平均数据
+        predict2 = get_delta(
+            get_formatted_date(7), get_formatted_date(0), 7, g)[1]
+        # 7天前与8天前对比的增量
+        delta2 = get_delta(get_formatted_date(
+            8), get_formatted_date(7), 1, g)[0]
         # 按天数从低到高排序
         for key in sorted(predict.keys(), key=lambda k: predict[k]):
-            s = s + f"{key}：播放量{g.videos[key].views}，增量{delta[key]}"
+            # 比上周同比增加50%，加一个↑符号
+            try:
+                if delta[key] / delta2[key] >= 1.5:
+                    s = s + '↑'
+            # 比上周同比减少50%，加一个↓符号
+            try:
+                if delta[key] / delta2[key] <= 0.5:
+                    s = s + '↓'
+            s = s + \
+                f"{(m==delta[key] and len(delta)>1) and '*' or ''}{key}：播放量{g.videos[key].views}，增量{delta[key]}"
             if g.videos[key].views > g.goal:
                 s = s + f"（{g.congrats}）\n"
             else:
-                s = s + f"（{predict[key]:d}天）\n"
+                s = s + f"（{predict[key]:d}/{predict2[key]:d}天）\n"
     pyperclip.copy(s)  # 粘贴到剪切板
     return s
 
