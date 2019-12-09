@@ -151,7 +151,7 @@ def get_brief(former: str = get_formatted_date(1), latter: str = "api", delta_da
     is_first = True
     if titled:
         t = datetime.datetime.today()
-        s = f"每日简报 {t:%#m}月{t:%#d}日\n"
+        s = f"每日简报 {t:%#m}月{t:%#d}日\n*：该组播放量最多的歌曲\n↑：比上周同期播放量明显上升（>=150%）\n↓：比上周同期播放量明显下降（<=67%）\n（当日预测天数 / 整周预测天数）"
     else:
         s = ""
     for g in groups.values():
@@ -174,10 +174,14 @@ def get_brief(former: str = get_formatted_date(1), latter: str = "api", delta_da
             try:
                 if delta[key] / delta2[key] >= 1.5:
                     s = s + '↑'
+            except:
+                pass
             # 比上周同比减少50%，加一个↓符号
             try:
-                if delta[key] / delta2[key] <= 0.5:
+                if delta[key] / delta2[key] <= 2/3:
                     s = s + '↓'
+            except:
+                pass
             s = s + \
                 f"{(m==delta[key] and len(delta)>1) and '*' or ''}{key}：播放量{g.videos[key].views}，增量{delta[key]}"
             if g.videos[key].views > g.goal:
