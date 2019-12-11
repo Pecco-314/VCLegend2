@@ -151,7 +151,7 @@ def get_brief(former: str = get_formatted_date(1), latter: str = "api", delta_da
     is_first = True
     if titled:
         t = datetime.datetime.today()
-        s = f"每日简报 {t:%#m}月{t:%#d}日\n*：该组播放量最多的歌曲\n↑：比上周同期播放量明显上升（>=150%）\n↓：比上周同期播放量明显下降（<=67%）\n（当日预测天数 / 整周预测天数）"
+        s = f"每日简报 {t:%#m}月{t:%#d}日\n*：该组播放量最多的歌曲\n↑：比上周同期播放量明显上升（\>=150%）\n↓：比上周同期播放量明显下降（\<=67%）\n（当日预测天数 / 整周预测天数）\n"
     else:
         s = ""
     for g in groups.values():
