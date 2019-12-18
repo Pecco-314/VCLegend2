@@ -207,4 +207,7 @@ if __name__ == "__main__":
             except FileNotFoundError:
                 print(f"未找到文件：{get_formatted_date(i)}.txt")
                 i += 1
+                if (i % 10 == 0):
+                    print("是否继续查找文件？（回车继续）")
+                    input()
     os.system("pause")
