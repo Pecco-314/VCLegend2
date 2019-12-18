@@ -139,21 +139,21 @@ def get_delta(former: str, latter: str, delta_days: int, group: videogroup) -> t
     return delta, predict
 
 
-def get_brief(former: str = get_formatted_date(1), latter: str = "api", delta_days: int = 1, titled=True) -> str:
+def get_brief(former: str = get_formatted_date(1), latter: str = "api", delta_days: int = 1, title="auto") -> str:
     """
     生成简报字符串
         former：较早的日期，应传入日期字符串，如"20191201"
         latter：较近的日期，应传入日期字符串或"api"，表示数据从api中获取
         delta_days：日期的间隔
-        titled：是否显示标题
+        titled：标题，若为"auto"则自动生成
     """
     groups = make_groups()
     is_first = True
-    if titled:
+    if title == "auto":
         t = datetime.datetime.today()
         s = f"每日简报 {t:%#m}月{t:%#d}日\n*：该组播放量最多的歌曲\n↑：比上周同期播放量明显上升（\>=150%）\n↓：比上周同期播放量明显下降（\<=67%）\n（当日预测天数 / 整周预测天数）\n"
     else:
-        s = ""
+        s = title
     for g in groups.values():
         if is_first:
             is_first = False
@@ -172,13 +172,13 @@ def get_brief(former: str = get_formatted_date(1), latter: str = "api", delta_da
         for key in sorted(predict.keys(), key=lambda k: predict[k]):
             # 比上周同比增加50%，加一个↑符号
             try:
-                if delta[key] / delta2[key] >= 1.5:
+                if delta[key] / delta_days / delta2[key] >= 1.5:
                     s = s + '↑'
             except:
                 pass
             # 比上周同比减少50%，加一个↓符号
             try:
-                if delta[key] / delta2[key] <= 2/3:
+                if delta[key] / delta_days / delta2[key] <= 2/3:
                     s = s + '↓'
             except:
                 pass
@@ -193,5 +193,18 @@ def get_brief(former: str = get_formatted_date(1), latter: str = "api", delta_da
 
 
 if __name__ == "__main__":
-    print(get_brief())
+    try:
+        print(get_brief())
+    except FileNotFoundError:
+        print(f"未找到文件：{get_formatted_date(1)}.txt")
+        i = 2
+        while True:
+            try:
+                t = datetime.datetime.today()
+                title = f"每日简报 {t:%#m}月{t-datetime.timedelta(days=i-1):%#d}-{t:%#d}日\n*：该组播放量最多的歌曲\n↑：比上周同期播放量明显上升（\>=150%）\n↓：比上周同期播放量明显下降（\<=67%）\n（当日预测天数 / 整周预测天数）\n"
+                print(get_brief(get_formatted_date(i), "api", i, title))
+                break
+            except FileNotFoundError:
+                print(f"未找到文件：{get_formatted_date(i)}.txt")
+                i += 1
     os.system("pause")
