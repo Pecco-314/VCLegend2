@@ -3,6 +3,7 @@ import re
 import requests
 import pyperclip
 import os
+import copy
 
 
 def get_formatted_date(delta: int = 0) -> str:
@@ -120,22 +121,29 @@ def make_groups() -> dict:
     return groups
 
 
-def get_delta(former: str, latter: str, delta_days: int, group: videogroup) -> tuple:
+def get_delta(former: str, latter: str, delta_days: int, group: videogroup, no_side_effect: bool = False) -> tuple:
     """
     得到某个视频组的所有视频在两个日期前后的增量，并估计达到目标的时间，返回增量和估计时间所组成的元组
     """
+    if no_side_effect:
+        group2 = copy.deepcopy(group)
+    else:
+        group2 = group
     hist = get_from_file(former)
     if latter == "api":  # 从api中获取数据
-        group.set_views()
+        group2.set_views()
         data = group.get_views()
     else:
         data = get_from_file(latter)
-        group.set_views(data=data)
+        group2.set_views(data=data)
     delta = sub_dict(data, hist)
     predict = {}
-    for name in group.videos.keys():
-        rest = group.goal - data[name]
-        predict[name] = rest*delta_days//delta[name]
+    for name in group2.videos.keys():
+        try:
+            rest = group.goal - data[name]
+            predict[name] = rest * delta_days // delta[name]
+        except KeyError:
+            continue
     return delta, predict
 
 
@@ -163,11 +171,19 @@ def get_brief(former: str = get_formatted_date(1), latter: str = "api", delta_da
         # 最大增量
         m = max(delta.values())
         # 7天平均数据
-        predict2 = get_delta(
-            get_formatted_date(7), get_formatted_date(0), 7, g)[1]
-        # 7天前与8天前对比的增量
-        delta2 = get_delta(get_formatted_date(
-            8), get_formatted_date(7), 1, g)[0]
+        try:
+            predict2 = get_delta(
+                get_formatted_date(7), get_formatted_date(0), 7, g, True)[1]
+            # 7天前与8天前对比的增量
+            delta2 = get_delta(get_formatted_date(
+                8), get_formatted_date(7), 1, g, True)[0]
+        except FileNotFoundError:
+            predict2 = get_delta(
+                get_formatted_date(8), get_formatted_date(0), 8, g, True)[1]
+            # 7天前与8天前对比的增量
+            delta2 = get_delta(get_formatted_date(
+                9), get_formatted_date(8), 1, g, True)[0]
+
         # 按天数从低到高排序
         for key in sorted(predict.keys(), key=lambda k: predict[k]):
             # 比上周同比增加50%，加一个↑符号
