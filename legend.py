@@ -178,11 +178,16 @@ def get_brief(former: str = get_formatted_date(1), latter: str = "api", delta_da
             delta2 = get_delta(get_formatted_date(
                 8), get_formatted_date(7), 1, g, True)[0]
         except FileNotFoundError:
-            predict2 = get_delta(
-                get_formatted_date(8), get_formatted_date(0), 8, g, True)[1]
-            # 7天前与8天前对比的增量
-            delta2 = get_delta(get_formatted_date(
-                9), get_formatted_date(8), 1, g, True)[0]
+            day = 8
+            while 1:
+                try:
+                    predict2 = get_delta(
+                        get_formatted_date(day), get_formatted_date(0), day, g, True)[1]
+                    delta2 = get_delta(get_formatted_date(
+                        day + 1), get_formatted_date(day), 1, g, True)[0]
+                    break
+                except FileNotFoundError:
+                    day += 1
 
         # 按天数从低到高排序
         for key in sorted(predict.keys(), key=lambda k: predict[k]):
