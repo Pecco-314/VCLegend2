@@ -10,19 +10,15 @@ Group Myth
 Group Legend
     Goal 1000000
     Congrats 恭喜传说！
+    Video 赤伶 77889118
     Video 不老不死 55888297
     Video 警察蜀黍 1328642
-    Video 〇 28381447
     Video 逃亡生涯 15735744
-    Video 复仇生涯 27174014
-    Video 非人哉 21221652
     Video 钥匙 3676843
     Video 铄金 5244057
     Video 男孩 33640798
     Video 罗德岛 55287468
-    Video 地势坤 69519887
     Video 多情岸 25386207
-    Video 上山岗 80155822
 Group Others
     Goal 1000000
     Congrats 恭喜传说！

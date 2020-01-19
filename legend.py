@@ -15,21 +15,25 @@ def get_formatted_date(delta: int = 0) -> str:
     return f"{(datetime.datetime.today()-datetime.timedelta(days=delta)):%Y%m%d}"
 
 
-def sub_dict(dic1: dict, dic2: dict) -> dict:
+def sub_dict(dic1: dict, dic2: dict, reserved: bool = False) -> dict:
     """
     将两个字典键相同的元素相减
 
-    如果一个键在dic1中存在，而在dic2中不存在，则保留该键对应的值，
+    如果一个键在dic1中存在，而在dic2中不存在，若reversed为真则保留该键对应的值，否则不保留；
     如果一个键在dic2中不存在，而在dic2中存在，则不保留该键对应的值
 
-    例如，dic1是{'A':100, 'B':200}，dic2是{'B':50, 'C':100}，则应当返回{'A':100, 'B':150}
+    例如，若reserved为真，且dic1是{'A':100, 'B':200}，dic2是{'B':50, 'C':100}，
+    则应当返回{'A':100, 'B':150}
     """
     dic = {}
     for key in dic1.keys():
         try:
             dic[key] = dic1[key] - dic2[key]
         except KeyError:  # 如果dic2中不存在该键，视为0
-            dic[key] = dic1[key]
+            if reserved:
+                dic[key] = dic1[key]
+            else:
+                continue
     return dic
 
 
@@ -178,7 +182,7 @@ def get_brief(former: str = get_formatted_date(1), latter: str = "api", delta_da
             delta2 = get_delta(get_formatted_date(
                 8), get_formatted_date(7), 1, g, True)[0]
         except FileNotFoundError:
-            day = 8
+            day = 6
             while 1:
                 try:
                     predict2 = get_delta(
@@ -187,7 +191,7 @@ def get_brief(former: str = get_formatted_date(1), latter: str = "api", delta_da
                         day + 1), get_formatted_date(day), 1, g, True)[0]
                     break
                 except FileNotFoundError:
-                    day += 1
+                    day -= 1
 
         # 按天数从低到高排序
         for key in sorted(predict.keys(), key=lambda k: predict[k]):
@@ -208,7 +212,21 @@ def get_brief(former: str = get_formatted_date(1), latter: str = "api", delta_da
             if g.videos[key].views > g.goal:
                 s = s + f"（{g.congrats}）\n"
             else:
-                s = s + f"（{predict[key]:d}/{predict2[key]:d}天）\n"
+                pre1 = predict.get(key)
+                pre2 = predict2.get(key)
+                prestr1 = (pre1 and f"{pre1:d}" or "")
+                prestr2 = (pre2 and f"{pre2:d}" or "")
+                cnt = int(bool(pre1)) + int(bool(pre2))
+                if cnt:
+                    s = s + "（"
+                s = s + prestr1
+                if cnt == 2:
+                    s = s + "/"
+                s = s + prestr2
+                if cnt:
+                    s = s + "天）"
+                s = s + "\n"
+
     pyperclip.copy(s)  # 粘贴到剪切板
     return s
 
