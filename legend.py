@@ -145,7 +145,7 @@ def get_delta(former: str, latter: str, delta_days: int, group: videogroup, no_s
     for name in group2.videos.keys():
         try:
             rest = group.goal - data[name]
-            predict[name] = rest * delta_days // delta[name]
+            predict[name] = rest * delta_days // delta[name] + 1
         except KeyError:
             continue
     return delta, predict
@@ -249,4 +249,6 @@ if __name__ == "__main__":
                 if (i % 10 == 0):
                     print("是否继续查找文件？（回车继续）")
                     input()
+    except requests.exceptions.ProxyError:
+        print("网络出现问题")
     os.system("pause")
