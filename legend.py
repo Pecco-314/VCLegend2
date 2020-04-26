@@ -151,6 +151,10 @@ def get_delta(former: str, latter: str, delta_days: int, group: videogroup, no_s
     return delta, predict
 
 
+def hack_hx(s):
+    return s.replace("404", "④04").replace("1989", "19⑧9").replace("586", "5⑧6")
+
+
 def get_brief(former: str = get_formatted_date(1), latter: str = "api", delta_days: int = 1, title="auto") -> str:
     """
     生成简报字符串
@@ -163,7 +167,7 @@ def get_brief(former: str = get_formatted_date(1), latter: str = "api", delta_da
     is_first = True
     if title == "auto":
         t = datetime.datetime.today()
-        s = f"每日简报 {t:%#m}月{t:%#d}日\n*：该组播放量最多的歌曲\n↑：比上周同期播放量明显上升（\>=150%）\n↓：比上周同期播放量明显下降（\<=67%）\n（当日预测天数 / 整周预测天数）\n"
+        s = f"每日简报 {t:%#m}月{t:%#d}日\n*：该组播放量最多的歌曲\n↑：比上周同期播放量明显上升（\>=150%）\n↓：比上周同期播放量明显下降（\<=67%）\n（当日预测天数 | 整周预测天数）\n"
     else:
         s = title
     for g in groups.values():
@@ -221,14 +225,14 @@ def get_brief(former: str = get_formatted_date(1), latter: str = "api", delta_da
                     s = s + "（"
                 s = s + prestr1
                 if cnt == 2:
-                    s = s + "/"
+                    s = s + "|"
                 s = s + prestr2
                 if cnt:
                     s = s + "天）"
                 s = s + "\n"
 
     pyperclip.copy(s)  # 粘贴到剪切板
-    return s
+    return hack_hx(s)
 
 
 if __name__ == "__main__":
