@@ -1,7 +1,6 @@
 import datetime
 import re
 import requests
-import pyperclip
 import os
 import copy
 
@@ -155,26 +154,27 @@ def hack_hx(s):
     return s.replace("404", "④04").replace("1989", "19⑧9").replace("586", "5⑧6")
 
 
-def get_brief(former: str = get_formatted_date(1), latter: str = "api", delta_days: int = 1, title="auto") -> str:
+def print_brief(former: str = get_formatted_date(1), latter: str = "api", delta_days: int = 1, title="auto") -> str:
     """
-    生成简报字符串
+    打印简报
         former：较早的日期，应传入日期字符串，如"20191201"
         latter：较近的日期，应传入日期字符串或"api"，表示数据从api中获取
         delta_days：日期的间隔
-        titled：标题，若为"auto"则自动生成
+        title：标题，若为"auto"则自动生成
     """
     groups = make_groups()
     is_first = True
     if title == "auto":
         t = datetime.datetime.today()
-        s = f"每日简报 {t:%#m}月{t:%#d}日\n*：该组播放量最多的歌曲\n↑：比上周同期播放量明显上升（\>=150%）\n↓：比上周同期播放量明显下降（\<=67%）\n（当日预测天数 | 整周预测天数）\n"
+        print(
+            f"每日简报 {t:%#m}月{t:%#d}日\n*：该组播放量最多的歌曲\n↑：比上周同期播放量明显上升（\>=150%）\n↓：比上周同期播放量明显下降（\<=67%）\n（当日预测天数 | 整周预测天数）")
     else:
-        s = title
-    for g in groups.values():
+        print(title)
+    for name, g in groups.items():
         if is_first:
             is_first = False
         else:
-            s = s + ("----\n")
+            print("----")
         delta, predict = get_delta(former, latter, delta_days, g)
         # 最大增量
         m = max(delta.values())
@@ -199,53 +199,53 @@ def get_brief(former: str = get_formatted_date(1), latter: str = "api", delta_da
 
         # 按天数从低到高排序
         for key in sorted(predict.keys(), key=lambda k: predict[k]):
+            text = ""
             # 比上周同比增加50%，加一个↑符号
             try:
                 if delta[key] / delta_days / delta2[key] >= 1.5:
-                    s = s + '↑'
+                    text += '↑'
             except:
                 pass
             # 比上周同比减少50%，加一个↓符号
             try:
                 if delta[key] / delta_days / delta2[key] <= 2/3:
-                    s = s + '↓'
+                    text += '↓'
             except:
                 pass
-            s = s + \
-                f"{(m==delta[key] and len(delta)>1) and '*' or ''}{key}：播放量{g.videos[key].views}，增量{delta[key]}"
+
+            text += f"{(m==delta[key] and len(delta)>1) and '*' or ''}{key}：播放量{g.videos[key].views}，增量{delta[key]}"
             if g.videos[key].views > g.goal:
-                s = s + f"（{g.congrats}）\n"
+                text += f"（{g.congrats}）"
             else:
                 pre1 = predict.get(key)
+                if name == "Legend" and pre1 > 365:
+                    break
                 pre2 = predict2.get(key)
                 prestr1 = (pre1 and f"{pre1:d}" or "")
                 prestr2 = (pre2 and f"{pre2:d}" or "")
                 cnt = int(bool(pre1)) + int(bool(pre2))
                 if cnt:
-                    s = s + "（"
-                s = s + prestr1
+                    text += "（"
+                text += prestr1
                 if cnt == 2:
-                    s = s + "|"
-                s = s + prestr2
+                    text += "|"
+                text += prestr2
                 if cnt:
-                    s = s + "天）"
-                s = s + "\n"
-
-    pyperclip.copy(s)  # 粘贴到剪切板
-    return hack_hx(s)
+                    text += "天）"
+            print(text)
 
 
 if __name__ == "__main__":
     try:
-        print(get_brief())
+        print_brief()
     except FileNotFoundError:
         print(f"未找到文件：{get_formatted_date(1)}.txt")
         i = 2
         while True:
             try:
                 t = datetime.datetime.today()
-                title = f"每日简报 {t:%#m}月{t-datetime.timedelta(days=i-1):%#d}-{t:%#d}日\n*：该组播放量最多的歌曲\n↑：比上周同期播放量明显上升（\>=150%）\n↓：比上周同期播放量明显下降（\<=67%）\n（当日预测天数 / 整周预测天数）\n"
-                print(get_brief(get_formatted_date(i), "api", i, title))
+                title = f"每日简报 {t:%#m}月{t-datetime.timedelta(days=i-1):%#d}-{t:%#d}日\n*：该组播放量最多的歌曲\n↑：比上周同期播放量明显上升（\>=150%）\n↓：比上周同期播放量明显下降（\<=67%）\n（当日预测天数 / 整周预测天数）"
+                print_brief(get_formatted_date(i), "api", i, title)
                 break
             except FileNotFoundError:
                 print(f"未找到文件：{get_formatted_date(i)}.txt")
