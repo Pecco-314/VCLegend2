@@ -19,9 +19,8 @@ Group Legend
     Video 大时代 3179885
     Video APP 90895707
     Video 白石溪 3675122
-    Video 肮脏的神 667873249
     Video 如见青山 48312083
-    Video 祖龙吟 42348447
+    Video 祖|龙吟 42348447
     Video 山河令 29861968
     Video 化学生僻字 81248937
     Video 埃及方块 5838968
@@ -29,14 +28,14 @@ Group Legend
     Video 追光使者 7846056
     Video 高三税 948808
     Video 最美的夏天 5350871
-    Video 洗白 97036575
-    Video 水逆 285205499
-    Video 年少无罪 242800159
+    Video 恋与术术人 89744912
+    Video 头摇摇 91876053
 Group Others
     Goal 1000000
     Congrats 恭喜传说！
     Video 桂圆 2231425
     Video 斯莱特林 67647585
+    Video 踮脚尖 2231891
 Group SV1
     Goal 10000000
     Congrats 恭喜神话！
@@ -50,3 +49,22 @@ Group SV2
     Video 玫瑰 710067065
     Video 赤伶 77889118
     Video 四零四 69376404
+Group Observe
+    Goal 1000000
+    Congrats 恭喜传说！
+    Video 格兰芬多 840428043
+    Video 洗白 97036575
+    Video 水逆 285205499
+    Video 年少无罪 242800159
+    Video 雨兔 55468227
+    Video 大碗宽面 50260987
+    Video 洛水 58811214
+    Video Attack! 54701738
+    Video HearMe 42164442
+    Video 孩子气的战争 23569761
+    Video 十二号诛杀者 22271765
+    Video 宿命论 1872018
+    Video 由 3809642
+    Video 罂粟花冠 1125077
+    Video 皮影戏 838056432
+    Video 一万万 80031048

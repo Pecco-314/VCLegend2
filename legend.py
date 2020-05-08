@@ -151,7 +151,7 @@ def get_delta(former: str, latter: str, delta_days: int, group: videogroup, no_s
 
 
 def hack_hx(s):
-    return s.replace("404", "④04").replace("1989", "19⑧9").replace("586", "5⑧6")
+    return s.replace("404", "④04").replace("1989", "19⑧9").replace("586", "5⑧6").replace("73", "⑦3").replace("8964","8⑨⑥4").replace("535","5③5")
 
 
 def print_brief(former: str = get_formatted_date(1), latter: str = "api", delta_days: int = 1, title="auto") -> str:
@@ -166,8 +166,8 @@ def print_brief(former: str = get_formatted_date(1), latter: str = "api", delta_
     is_first = True
     if title == "auto":
         t = datetime.datetime.today()
-        print(
-            f"每日简报 {t:%#m}月{t:%#d}日\n*：该组播放量最多的歌曲\n↑：比上周同期播放量明显上升（\>=150%）\n↓：比上周同期播放量明显下降（\<=67%）\n（当日预测天数 | 整周预测天数）")
+        print(f"每日简报 {t:%#m}月{t:%#d}日")
+        # print("*：该组播放量最多的歌曲\n↑：比上周同期播放量明显上升（\>=150%）\n↓：比上周同期播放量明显下降（\<=67%）\n（当日预测天数 / 整周预测天数）\n")
     else:
         print(title)
     for name, g in groups.items():
@@ -244,7 +244,8 @@ if __name__ == "__main__":
         while True:
             try:
                 t = datetime.datetime.today()
-                title = f"每日简报 {t:%#m}月{t-datetime.timedelta(days=i-1):%#d}-{t:%#d}日\n*：该组播放量最多的歌曲\n↑：比上周同期播放量明显上升（\>=150%）\n↓：比上周同期播放量明显下降（\<=67%）\n（当日预测天数 / 整周预测天数）"
+                title = f"每日简报 {t:%#m}月{t-datetime.timedelta(days=i-1):%#d}-{t:%#d}日"
+                # title += "*：该组播放量最多的歌曲\n↑：比上周同期播放量明显上升（\>=150%）\n↓：比上周同期播放量明显下降（\<=67%）\n（当日预测天数 / 整周预测天数）\n"
                 print_brief(get_formatted_date(i), "api", i, title)
                 break
             except FileNotFoundError:
