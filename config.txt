@@ -35,7 +35,6 @@ Group Others
     Congrats 恭喜传说！
     Video 桂圆 2231425
     Video 斯莱特林 67647585
-    Video 踮脚尖 2231891
 Group SV1
     Goal 10000000
     Congrats 恭喜神话！
@@ -68,3 +67,4 @@ Group Observe
     Video 罂粟花冠 1125077
     Video 皮影戏 838056432
     Video 一万万 80031048
+    Video 踮脚尖 2231891

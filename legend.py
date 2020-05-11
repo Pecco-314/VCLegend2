@@ -150,10 +150,6 @@ def get_delta(former: str, latter: str, delta_days: int, group: videogroup, no_s
     return delta, predict
 
 
-def hack_hx(s):
-    return s.replace("404", "④04").replace("1989", "19⑧9").replace("586", "5⑧6").replace("73", "⑦3").replace("8964","8⑨⑥4").replace("535","5③5")
-
-
 def print_brief(former: str = get_formatted_date(1), latter: str = "api", delta_days: int = 1, title="auto") -> str:
     """
     打印简报

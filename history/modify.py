@@ -11,7 +11,7 @@ def modify(filename, old, new):
 cur = datetime.datetime(2019, 12, 1)
 while cur <= datetime.datetime.today():
     try:
-        modify(f"{cur:%Y%m%d}.txt", "祖龙吟", "祖|龙吟")
+        modify(f"{cur:%Y%m%d}.txt", "祖|龙吟", "祖龙吟")
     except FileNotFoundError as e:
         print(e)
         pass
