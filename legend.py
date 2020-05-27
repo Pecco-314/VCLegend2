@@ -175,39 +175,43 @@ def print_brief(former: str = get_formatted_date(1), latter: str = "api", delta_
         # 最大增量
         m = max(delta.values())
         # 7天平均数据
-        try:
-            predict2 = get_delta(
-                get_formatted_date(7), get_formatted_date(0), 7, g, True)[1]
-            # 7天前与8天前对比的增量
-            delta2 = get_delta(get_formatted_date(
-                8), get_formatted_date(7), 1, g, True)[0]
-        except FileNotFoundError:
-            day = 6
-            while 1:
-                try:
-                    predict2 = get_delta(
-                        get_formatted_date(day), get_formatted_date(0), day, g, True)[1]
-                    delta2 = get_delta(get_formatted_date(
-                        day + 1), get_formatted_date(day), 1, g, True)[0]
-                    break
-                except FileNotFoundError:
-                    day -= 1
+        if latter == "api":
+            try:
+                predict2 = get_delta(
+                    get_formatted_date(7), get_formatted_date(0), 7, g, True)[1]
+                # 7天前与8天前对比的增量
+                delta2 = get_delta(get_formatted_date(
+                    8), get_formatted_date(7), 1, g, True)[0]
+            except FileNotFoundError:
+                day = 6
+                while 1:
+                    try:
+                        predict2 = get_delta(
+                            get_formatted_date(day), get_formatted_date(0), day, g, True)[1]
+                        delta2 = get_delta(get_formatted_date(
+                            day + 1), get_formatted_date(day), 1, g, True)[0]
+                        break
+                    except FileNotFoundError:
+                        day -= 1
+        else:
+            predict2, delta2 = predict, delta
 
         # 按天数从低到高排序
         for key in sorted(predict.keys(), key=lambda k: predict[k]):
             text = ""
             # 比上周同比增加50%，加一个↑符号
-            try:
-                if delta[key] / delta_days / delta2[key] >= 1.5:
-                    text += '↑'
-            except:
-                pass
-            # 比上周同比减少50%，加一个↓符号
-            try:
-                if delta[key] / delta_days / delta2[key] <= 2/3:
-                    text += '↓'
-            except:
-                pass
+            if latter == "api":
+                try:
+                    if delta[key] / delta_days / delta2[key] >= 1.5:
+                        text += '↑'
+                except:
+                    pass
+                # 比上周同比减少50%，加一个↓符号
+                try:
+                    if delta[key] / delta_days / delta2[key] <= 2/3:
+                        text += '↓'
+                except:
+                    pass
 
             text += f"{(m==delta[key] and len(delta)>1) and '*' or ''}{key}：播放量{g.videos[key].views}，增量{delta[key]}"
             if g.videos[key].views > g.goal:
@@ -223,9 +227,10 @@ def print_brief(former: str = get_formatted_date(1), latter: str = "api", delta_
                 if cnt:
                     text += "（"
                 text += prestr1
-                if cnt == 2:
-                    text += "|"
-                text += prestr2
+                if latter == "api":
+                    if cnt == 2:
+                        text += "|"
+                    text += prestr2
                 if cnt:
                     text += "天）"
             print(text)
@@ -234,6 +239,7 @@ def print_brief(former: str = get_formatted_date(1), latter: str = "api", delta_
 if __name__ == "__main__":
     try:
         print_brief()
+        # print_brief("20200520", "20200526", 7, "")
     except FileNotFoundError:
         print(f"未找到文件：{get_formatted_date(1)}.txt")
         i = 2
