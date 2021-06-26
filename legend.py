@@ -5,13 +5,15 @@ import os
 import copy
 
 
-def get_formatted_date(delta: int = 0) -> str:
+def get_formatted_date(
+    delta: int = 0, cur: datetime.datetime = datetime.datetime.today()
+) -> str:
     """
     由向前偏移量得到标准日期字符串
 
     例如，如果date是表示当前时间的datetime变量，而delta为1，那么将返回昨天的日期字符串，格式为YYYYmmdd
     """
-    return f"{(datetime.datetime.today()-datetime.timedelta(days=delta)):%Y%m%d}"
+    return f"{(cur-datetime.timedelta(days=delta)):%Y%m%d}"
 
 
 def sub_dict(dic1: dict, dic2: dict, reserved: bool = False) -> dict:
@@ -54,7 +56,7 @@ def save_as_file(dic: dict, date: str):
             print(name, view, file=save)
 
 
-class video():
+class video:
     """
     B站视频
         av：视频的av号
@@ -62,16 +64,23 @@ class video():
 
     def __init__(self, av: str):
         self.av = av
+        self.deleted = False
 
     def get_views_from_api(self):
         """从api中获取播放量"""
         self.latter = get_formatted_date()
-        with requests.get(f"http://api.bilibili.com/archive_stat/stat?aid={self.av}") as u:
-            # 利用正则表达式，找到"views": 后的数字即为播放量
-            self.views = int(re.findall("(?<=\"view\":)\\d+", u.text)[0])
+        with requests.get(
+            f"http://api.bilibili.com/archive_stat/stat?aid={self.av}"
+        ) as u:
+            try:
+                # 利用正则表达式，找到"views": 后的数字即为播放量
+                self.views = int(re.findall('(?<="view":)\\d+', u.text)[0])
+            except IndexError:
+                print(f"未找到av号为{self.av}的视频")
+                self.deleted = True
 
 
-class videogroup():
+class videogroup:
     """
     视频组
         goal：目标播放量
@@ -101,7 +110,8 @@ class videogroup():
         """获取视频播放量数据，返回字典"""
         data = {}
         for name, video in self.videos.items():
-            data[name] = video.views
+            if not video.deleted:
+                data[name] = video.views
         return data
 
 
@@ -124,7 +134,13 @@ def make_groups() -> dict:
     return groups
 
 
-def get_delta(former: str, latter: str, delta_days: int, group: videogroup, no_side_effect: bool = False) -> tuple:
+def get_delta(
+    former: str,
+    latter: str,
+    delta_days: int,
+    group: videogroup,
+    no_side_effect: bool = False,
+) -> tuple:
     """
     得到某个视频组的所有视频在两个日期前后的增量，并估计达到目标的时间，返回增量和估计时间所组成的元组
     """
@@ -138,6 +154,7 @@ def get_delta(former: str, latter: str, delta_days: int, group: videogroup, no_s
         data = group.get_views()
     else:
         data = get_from_file(latter)
+        data = {k: v for k, v in data.items() if k in group2.videos}
         group2.set_views(data=data)
     delta = sub_dict(data, hist)
     predict = {}
@@ -150,7 +167,18 @@ def get_delta(former: str, latter: str, delta_days: int, group: videogroup, no_s
     return delta, predict
 
 
-def print_brief(former: str = get_formatted_date(1), latter: str = "api", delta_days: int = 1, title="auto") -> str:
+def print_with_backup(s: str):
+    print(s)
+    with open("backup.txt", "a") as fp:
+        print(s, file=fp)
+
+
+def print_brief(
+    former: str = get_formatted_date(1),
+    latter: str = "api",
+    delta_days: int = 1,
+    title="auto",
+) -> str:
     """
     打印简报
         former：较早的日期，应传入日期字符串，如"20191201"
@@ -162,34 +190,54 @@ def print_brief(former: str = get_formatted_date(1), latter: str = "api", delta_
     is_first = True
     if title == "auto":
         t = datetime.datetime.today()
-        print(f"每日简报 {t:%#m}月{t:%#d}日")
+        print_with_backup(f"每日简报 {t:%#m}月{t:%#d}日")
         # print("*：该组播放量最多的歌曲\n↑：比上周同期播放量明显上升（\>=150%）\n↓：比上周同期播放量明显下降（\<=67%）\n（当日预测天数 / 整周预测天数）\n")
     else:
-        print(title)
+        print_with_backup(title)
     for name, g in groups.items():
         if is_first:
             is_first = False
         else:
-            print("----")
+            print_with_backup("----")
         delta, predict = get_delta(former, latter, delta_days, g)
         # 最大增量
-        m = max(delta.values())
+        if delta:
+            m = max(delta.values())
+        else:
+            m = 0
         # 7天平均数据
-        if latter == "api":
+        if latter == "api" or delta_days == 1:
             try:
+                cur = (
+                    latter == "api"
+                    and datetime.datetime.today()
+                    or datetime.datetime.strptime(latter, "%Y%m%d")
+                )
                 predict2 = get_delta(
-                    get_formatted_date(7), get_formatted_date(0), 7, g, True)[1]
+                    get_formatted_date(7, cur), get_formatted_date(0, cur), 7, g, True
+                )[1]
                 # 7天前与8天前对比的增量
-                delta2 = get_delta(get_formatted_date(
-                    8), get_formatted_date(7), 1, g, True)[0]
+                delta2 = get_delta(
+                    get_formatted_date(8, cur), get_formatted_date(7, cur), 1, g, True
+                )[0]
             except FileNotFoundError:
                 day = 6
                 while 1:
                     try:
                         predict2 = get_delta(
-                            get_formatted_date(day), get_formatted_date(0), day, g, True)[1]
-                        delta2 = get_delta(get_formatted_date(
-                            day + 1), get_formatted_date(day), 1, g, True)[0]
+                            get_formatted_date(day, cur),
+                            get_formatted_date(0, cur),
+                            day,
+                            g,
+                            True,
+                        )[1]
+                        delta2 = get_delta(
+                            get_formatted_date(day + 1, cur),
+                            get_formatted_date(day, cur),
+                            1,
+                            g,
+                            True,
+                        )[0]
                         break
                     except FileNotFoundError:
                         day -= 1
@@ -200,16 +248,16 @@ def print_brief(former: str = get_formatted_date(1), latter: str = "api", delta_
         for key in sorted(predict.keys(), key=lambda k: predict[k]):
             text = ""
             # 比上周同比增加50%，加一个↑符号
-            if latter == "api":
+            if latter == "api" or delta_days == 1:
                 try:
                     if delta[key] / delta_days / delta2[key] >= 1.5:
-                        text += '↑'
+                        text += "↑"
                 except:
                     pass
-                # 比上周同比减少50%，加一个↓符号
+                # 比上周同比减少33%，加一个↓符号
                 try:
-                    if delta[key] / delta_days / delta2[key] <= 2/3:
-                        text += '↓'
+                    if delta[key] / delta_days / delta2[key] <= 2 / 3:
+                        text += "↓"
                 except:
                     pass
 
@@ -221,25 +269,26 @@ def print_brief(former: str = get_formatted_date(1), latter: str = "api", delta_
                 if name == "Legend" and pre1 > 365:
                     break
                 pre2 = predict2.get(key)
-                prestr1 = (pre1 and f"{pre1:d}" or "")
-                prestr2 = (pre2 and f"{pre2:d}" or "")
+                prestr1 = pre1 and f"{pre1:d}" or ""
+                prestr2 = pre2 and f"{pre2:d}" or ""
                 cnt = int(bool(pre1)) + int(bool(pre2))
                 if cnt:
                     text += "（"
                 text += prestr1
-                if latter == "api":
+                if latter == "api" or delta_days == 1:
                     if cnt == 2:
                         text += "|"
                     text += prestr2
                 if cnt:
                     text += "天）"
-            print(text)
+            print_with_backup(text)
 
 
 if __name__ == "__main__":
     try:
+        open("backup.txt", "w")
         print_brief()
-        # print_brief("20200520", "20200526", 7, "")
+        # print_brief(f"20210328", f"20210329", 1, "")
     except FileNotFoundError:
         print(f"未找到文件：{get_formatted_date(1)}.txt")
         i = 2
@@ -253,7 +302,7 @@ if __name__ == "__main__":
             except FileNotFoundError:
                 print(f"未找到文件：{get_formatted_date(i)}.txt")
                 i += 1
-                if (i % 10 == 0):
+                if i % 10 == 0:
                     print("是否继续查找文件？（回车继续）")
                     input()
     except requests.exceptions.ProxyError:

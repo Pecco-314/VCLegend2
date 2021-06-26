@@ -2,8 +2,6 @@ Group Myth
     Goal 10000000
     Congrats 恭喜神话！
     Video 权御 2075941
-    Video 九九 3905462
-    Video 达拉 9372087
     Video 冠世 36570568
     Video 勾指 43426592
     Video 万古 78977256
@@ -12,63 +10,119 @@ Group Myth
 Group Legend
     Goal 1000000
     Congrats 恭喜传说！
-    Video 男孩 33640798
-    Video 罗德岛 55287468
-    Video 多情岸 25386207
-    Video 大时代 3179885
-    Video APP 90895707
-    Video 白石溪 3675122
-    Video 如见青山 48312083
-    Video 祖龙吟 42348447
-    Video 山河令 29861968
-    Video 化学生僻字 81248937
+    Video 血小板之歌 27147063
     Video 追光使者 7846056
     Video 最美的夏天 5350871
-    Video 恋与术术人 89744912
     Video 歌剧2 11844583
+    Video 知更鸟 25691870
     Video 头摇摇 91876053
-    Video 罂粟花冠 1125077
+    Video 无法原谅 6207175
+    Video 埃及方块 5838968
+    Video 格兰芬多 840428043
     Video 年少无罪 242800159
-    Video 由 3809642
-    Video 自卑感 625439554
-Group Others
+    Video 泥汤 800408956
+    Video 你好世界 28384607
+    Video 宿命论 1872018
+    Video 以数之名 667948717
+    Video 墨菲定律 97115417
+    Video 自攻自受 6477673
+    Video 恐惧至极 712768262
+    Video 洛水 58811214
+    Video 大碗宽面 50260987
+    Video 万光 968772260
+    Video 泠重 4704894
+    Video 零重 8815372
+    Video 易水诀 27928449
+    Video 代偿联盟 15670244
+    Video 自暴自弃 43377419
+    Video 凯撒男孩 668957921
+    Video 沙县 587257292
+    Video 栖凰 34158327
+    Video 洛阳怀 26273939
+    Video 仙王处处吻 88853089
+    Video 酆都地府 71712685
+    Video 拉文克劳 459693843
+    Video 神不肯说 710967569
+Group Others1
+    Goal 20000000
+    Congrats 恭喜两千万！
+    Video 普通 2129461
+    Video 九九 3905462
+    Video 达拉 9372087
+Group Others2
+    Goal 2231425
+    Congrats 恭喜超过av号
+    Video 桂圆 2231425
+Group Other3
     Goal 1000000
     Congrats 恭喜传说！
-    Video 桂圆 2231425
-    Video 斯莱特林 67647585
+    Video T.A.O. 71587813
 Group SV1
     Goal 10000000
     Congrats 恭喜神话！
+    Video 万象霜天 501314235
+    Video 苍蝇 456679355
     Video 天下局 65904455
     Video 流年 78978783
     Video 木兰行 837540509
+    Video 赤伶 77889118
+    Video 穷开心 927238663
+    Video 四零四 69376404
+    Video 不可道 711721411
+    Video 好字唯之 710942299
+    Video 易安难安 799978121
+    Video 千秋梦 544620737
 Group SV2
     Goal 1000000
     Congrats 恭喜传说！
-    Video 青鸟 79182548
-    Video 玫瑰 710067065
-    Video 四零四 69376404
-Group Observe
+    Video 水叙湖风 969799851
+    Video 惊鹊 375265162
+    Video 谓剑 373268046
+    Video 方舟穷开心 802948109
+    Video 风起甘露 542809932
+    Video 是非 885172395
+Group Palace
+    Goal 100000
+    Congrats 恭喜殿堂！
+    Video 猪猪 42624517
+    Video 新酒 658340
+    Video 光谱 376120
+    Video 看不见我 670284171
+Group Observe1
+    Goal 500000
+    Congrats 恭喜专兑！
+    Video 一直在一起 927115628
+    Video 皮影戏 838056432
+    Video 梦良衣 333121081
+Group Observe2
     Goal 1000000
     Congrats 恭喜传说！
-    Video 格兰芬多 840428043
+    Video 车 11152762
+    Video 欧菲香 14678451
+    Video 上下上下 9937776
+    Video 老街北 57785834
+    Video 牧星者 4496165
+    Video 罂粟花冠 1125077
+    Video starlight 58824435
+    Video Attack! 54701738
     Video HBD 3402945
     Video 高三税 948808
-    Video 老街北 57785834
-    Video 洗白 97036575
-    Video 水逆 285205499
-    Video 埃及方块 5838968
     Video 雨兔 55468227
-    Video 大碗宽面 50260987
-    Video 洛水 58811214
     Video HearMe 42164442
-    Video Attack! 54701738
+    Video 由 3809642
+    Video 双向监禁 905385
+    Video 双向遗忘 3061232
     Video 孩子气的战争 23569761
     Video 十二号诛杀者 22271765
-    Video 宿命论 1872018
-    Video 皮影戏 838056432
-    Video 一万万 80031048
     Video 踮脚尖 2231891
-    Video 泠重 4704894
-    Video 自攻自受 6477673
-    Video 零重 8815372
+    Video 恰柠檬 49245584
+    Vidoe 兔子先生 2877056
+    Video 洗白 97036575
+    Video ILoveU 540768
+    Video 盲 3211101
+    Video 粘土娘 2300875
+    Video 星雨之夜 2293806
+Group Observe3
+    Goal 2000000
+    Congrats 恭喜传说*2！
+    Video 水逆 285205499
